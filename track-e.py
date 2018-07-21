@@ -186,7 +186,7 @@ class LightTower:
         for idx,val in enumerate(self.fishing_ground):
             self.travling_draw(val,image,rectangle)
         dt=datetime.datetime.now()
-        image.save(self.workdir+dt.strftime('%Y%m%d%H%M%S%f')+".jpg","JPEG")
+        image.save(self.workdir+dt.strftime('%Y%m%d% H%M%S%f')+".jpg","JPEG")
     
 
 
