@@ -5,8 +5,10 @@ import requests
 import json
 from PIL import Image, ImageFilter,ImageDraw
 
-API_URL = 'https://kapi.kakao.com/v1/vision/face/detect'
-MYAPP_KEY = 'd97c1cf5443f691563adec0e826bc64a'
+# API_URL = 'https://kapi.kakao.com/v1/vision/face/detect'
+# MYAPP_KEY = 'd97c1cf5443f691563adec0e826bc64a'
+API_URL=''
+MYAPP_KEY=''
 
 def detect_face(filename):
     headers = {'Authorization': 'KakaoAK {}'.format(MYAPP_KEY)}
@@ -38,7 +40,13 @@ def rantangle(filename, detection_result):
 
 
 if __name__ == "__main__":
+    # 디렉토리 지정
     base_dir="samples/"
+    
+    # Kakao API key 지정
+    API_URL=''
+    MYAPP_KEY=''
+    
     image_pipe=os.listdir("samples")
 
     my_test_data=[]

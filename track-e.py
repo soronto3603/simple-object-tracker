@@ -8,12 +8,7 @@ from PIL import Image, ImageFilter,ImageDraw
 from time import sleep
 
 
-## Data Load
-f=open("detected_data_set.json","r")
 
-json_data=f.read()
-
-data=json.loads(json_data)
 
 def id_gen():
     dt=datetime.datetime.now()
@@ -181,14 +176,42 @@ class LightTower:
 
     def draw_pool_to_image(self,image):
         image=Image.open(image)
-        rectangle=ImageDraw.Draw(image)
+        imgdraw=ImageDraw.Draw(image)
 
+        # DrawRectangle
         for idx,val in enumerate(self.fishing_ground):
-            self.travling_draw(val,image,rectangle)
-        dt=datetime.datetime.now()
-        image.save(self.workdir+dt.strftime('%Y%m%d% H%M%S%f')+".jpg","JPEG")
-    
+            self.travling_draw(val,image,imgdraw)
+        
+        # DrawLine
+        for idx,val in enumerate(self.fishing_ground):
+            if(val.previous_detected_object != None):
+                self.travling_linear_draw(val,image,imgdraw)
 
+        dt=datetime.datetime.now()
+        image.save(self.workdir+dt.strftime('%Y%m%d%H%M%S%f')+".jpg","JPEG")
+
+    
+    def travling_linear_draw(self,fish,image,line):
+        prev=fish
+        cur=fish.previous_detected_object
+        while(True):
+            if(cur.previous_detected_object==None):
+                break
+            # draw line
+            # not work
+            # line.line((prev.center_x,prev.center_y, cur.center_x,cur.center_y), fill=fish.color)
+            # not work
+            # line.line((prev.face_info['x'],prev.face_info['y'],cur.face_info['x'],cur.face_info['y']),fill=fish.color)
+            
+            x1=prev.face_info['x']+int(prev.face_info['w']/2)
+            y1=prev.face_info['y']+int(prev.face_info['h']/2)
+            x2=cur.face_info['x']+int(cur.face_info['w']/2)
+            y2=cur.face_info['y']+int(cur.face_info['h']/2)
+            line.line((x1,y1,x2,y2),fill=fish.color,width=3)
+            # move pointer
+            temp=cur.previous_detected_object
+            prev=cur
+            cur=temp
 
     def travling_draw(self,fish,image,rectangle):
         
@@ -206,17 +229,29 @@ class LightTower:
         
 
 if __name__ == "__main__":
+
+    ## Data Load
+    f=open("detected_data_set.json","r")
+    json_data=f.read()
+    data=json.loads(json_data)
+
     # into data pipe line
     d=200
     p=10
 
     lt=LightTower(d=d,p=p)
     lt.workdir="result/d"+str(d)+"p"+str(p)+"/"
+    # Version 1 ( Draw box )
+    # for idx,dt in enumerate(data):
+    #     lt.push(data_parser(dt,idx))
+    #     lt.commit()
+    #     lt.draw_pool_to_image(dt['image'])
+
+    
     for idx,dt in enumerate(data):
         lt.push(data_parser(dt,idx))
         lt.commit()
         lt.draw_pool_to_image(dt['image'])
-
     
     # Simple Test Code
     # lt=LightTower()
