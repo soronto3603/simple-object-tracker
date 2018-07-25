@@ -22,4 +22,3 @@ if __name__ == "__main__":
     ui = MainWindow(w)
     w.show()
     sys.exit(app.exec_())
-
