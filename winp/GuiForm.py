@@ -12,13 +12,13 @@ class MainWindow(Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(w)
 
-        self.FindButton.clicked.connect(self.get_file_name)
+        self.FindButton.clicked.connect(self.get_file)
         self.CloseButton.clicked.connect(self.exitWindow)
 
     def exitWindow(self):
         app.quit()
 
-    def get_file_name(self):
+    def get_file(self):
         filename = QFileDialog.getOpenFileName()
         self.PathText.setText(filename[0])
         cap = cv2.VideoCapture(filename[0])
@@ -27,9 +27,9 @@ class MainWindow(Ui_MainWindow):
         img = QtGui.QImage(frame, frame.shape[1], frame.shape[0],frame.strides[0], QtGui.QImage.Format_RGB888)
         pix = QtGui.QPixmap.fromImage(img)
         scene = QtWidgets.QGraphicsScene()
-        scene.addPixmap(pix)
+        scene.addPixmap(pix.scaled(self.graphicsView.width(),self.graphicsView.height(), QtCore.Qt.KeepAspectRatio))
         self.graphicsView.setScene(scene)
-        self.graphicsView.resize(scene.width()/2,scene.height()/2)
+        self.graphicsView.resize(scene.width(),scene.height())
         self.graphicsView.show()
 
 

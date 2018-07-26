@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="FindButton">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>210</y>
+      <x>250</x>
+      <y>240</y>
       <width>114</width>
       <height>32</height>
      </rect>
@@ -57,7 +57,7 @@
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>40</y>
+      <y>20</y>
       <width>256</width>
       <height>71</height>
      </rect>
@@ -79,9 +79,9 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>40</y>
-      <width>321</width>
-      <height>141</height>
+      <y>20</y>
+      <width>341</width>
+      <height>181</height>
      </rect>
     </property>
    </widget>
@@ -89,7 +89,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>190</y>
+      <y>210</y>
       <width>321</width>
       <height>16</height>
      </rect>
