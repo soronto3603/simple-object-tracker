@@ -22,17 +22,6 @@ class GraphicsScene(QGraphicsScene):
         brush = QBrush(QtCore.Qt.black)
         x = event.scenePos().x()
         y = event.scenePos().y()
-        if(self.count%2 ==0):
-            self.pos1 = event.pos()
-            self.count = self.count+1
-        else:
-            self.pos2 = event.pos()
-            self.count = self.count + 1
-            self.PosArr += (self.pos1,self.pos2)
-        print(self.count)
-        print(self.PosArr)
-        for i in self.PosArr:
-            print(i)
         if self.opt == "Generate":
             self.addEllipse(x, y, 4, 4, pen, brush)
         elif self.opt == "Select":

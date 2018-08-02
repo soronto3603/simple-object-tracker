@@ -1,7 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtWidgets import QGraphicsScene
-from PyQt5.QtGui import QIcon, QPixmap,QPainter, QColor, QPen,QBrush
+from PyQt5.QtGui import QIcon,QPixmap,QPainter, QColor, QPen,QBrush
+from PyQt5.QtWidgets import ( QGraphicsView, QGraphicsScene, QFileDialog)
 from mainwindow import Ui_MainWindow
 import cv2
 import numpy as np
@@ -14,23 +13,33 @@ class GraphicsScene(QGraphicsScene):
         self.pos2 = None
         self.count = 0
         self.PosArr = ()
+        self.Postmp = ()
+
     def mousePressEvent(self,event):
         pen = QPen(QtCore.Qt.black)
         brush = QBrush(QtCore.Qt.black)
         x = event.scenePos().x()
         y = event.scenePos().y()
+
+        print('Coordinates: ( %d : %d )' % (x,y))
+
         if(self.count%2 ==0):
-            self.pos1 = event.pos()
-            self.count = self.count+1
+            self.pos1 = (x,y)
+            self.count = self.count + 1
         else:
-            self.pos2 = event.pos()
+            self.pos2 = (x,y)
             self.count = self.count + 1
             self.PosArr += (self.pos1,self.pos2)
-        print(self.count)
-        print(self.PosArr)
-        for i in self.PosArr:
-            print(i)
-        self.addEllipse(x, y, 4, 4, pen, brush)    
+            self.Postmp += (self.pos1,self.pos2)
+        self.addEllipse(x, y, 2, 2, pen, brush)
+
+        if(len(self.PosArr)%2 ==0 and self.count%2==0):
+            for pos1 in self.Postmp:
+                for pos2 in self.Postmp:
+                    if(pos1 == pos2):
+                        continue
+                    self.addLine(pos1[0],pos1[1],pos2[0],pos2[1],pen)
+                    self.Postmp = ()
 
 class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
     def __init__(self,parent=None):
@@ -44,6 +53,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         app.quit()
 
     def get_file(self):
+        self.scene.clear()
         filename = QFileDialog.getOpenFileName()
         self.PathText.setText(filename[0])
         cap = cv2.VideoCapture(filename[0])
