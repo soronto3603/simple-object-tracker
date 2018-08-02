@@ -15,13 +15,22 @@ class GraphicsScene(QGraphicsScene):
         self.PosArr = ()
         self.Postmp = ()
 
+    def DrawLine(self):
+        pen = QPen(QtCore.Qt.red)
+        for pos1 in self.Postmp:
+            for pos2 in self.Postmp:
+                if(pos1 == pos2):
+                    continue
+                self.addLine(pos1[0],pos1[1],pos2[0],pos2[1],pen)
+                self.Postmp = ()
+
     def mousePressEvent(self,event):
         pen = QPen(QtCore.Qt.black)
         brush = QBrush(QtCore.Qt.black)
         x = event.scenePos().x()
         y = event.scenePos().y()
-
         print('Coordinates: ( %d : %d )' % (x,y))
+        self.addEllipse(x, y, 2, 2, pen, brush)
 
         if(self.count%2 ==0):
             self.pos1 = (x,y)
@@ -31,15 +40,12 @@ class GraphicsScene(QGraphicsScene):
             self.count = self.count + 1
             self.PosArr += (self.pos1,self.pos2)
             self.Postmp += (self.pos1,self.pos2)
-        self.addEllipse(x, y, 2, 2, pen, brush)
 
         if(len(self.PosArr)%2 ==0 and self.count%2==0):
-            for pos1 in self.Postmp:
-                for pos2 in self.Postmp:
-                    if(pos1 == pos2):
-                        continue
-                    self.addLine(pos1[0],pos1[1],pos2[0],pos2[1],pen)
-                    self.Postmp = ()
+            self.DrawLine()
+
+
+
 
 class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
     def __init__(self,parent=None):
@@ -49,11 +55,13 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.CloseButton.clicked.connect(self.exitWindow)
         self.scene = GraphicsScene(self)
         self.graphicsView.setScene(self.scene)
+
     def exitWindow(self):
         app.quit()
 
     def get_file(self):
         self.scene.clear()
+        self.graphicsView.setTransform(QtGui.QTransform())
         filename = QFileDialog.getOpenFileName()
         self.PathText.setText(filename[0])
         cap = cv2.VideoCapture(filename[0])
@@ -61,11 +69,13 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img = QtGui.QImage(frame, frame.shape[1], frame.shape[0],frame.strides[0], QtGui.QImage.Format_RGB888)
         pix = QtGui.QPixmap.fromImage(img)
+        print("before graphicsview size w: %d h: %d" %(self.graphicsView.width(),self.graphicsView.height()))
         self.scene.addPixmap(pix.scaled(self.graphicsView.width(),self.graphicsView.height(), QtCore.Qt.KeepAspectRatio))
-        self.graphicsView.setScene(self.scene)
         self.graphicsView.resize(self.scene.width(),self.scene.height())
+        self.graphicsView.setScene(self.scene)
         self.graphicsView.show()
-
+        print("graphicsview size w: %d h: %d" %(self.graphicsView.width(),self.graphicsView.height()))
+        print("graphicsScene size w: %d h: %d" %(self.scene.width(),self.scene.height()))
 
 if __name__ == "__main__":
     import sys
