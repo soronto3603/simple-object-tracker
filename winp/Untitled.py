@@ -10,8 +10,6 @@ class GraphicsScene(QGraphicsScene):
         QGraphicsScene.__init__(self, parent)
         self.setSceneRect(-100, -100, 200, 200)
         self.opt = ""
-        self.pos1 = None
-        self.pos2 = None
         self.count = 0
         self.PosArr = ()
     def setOption(self, opt):
