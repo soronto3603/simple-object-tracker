@@ -11,7 +11,7 @@ frame_seq = 625
 frame_no = (frame_seq /(time_length*fps))
 
 #cap.set(cv2.CAP_PROP_POS_FRAMES,frame_no)
-
+print(frame_no)
 #영상의 fps 가져오는것
 print(cap.get(cv2.CAP_PROP_FPS))
 #영상 총 프레임수
