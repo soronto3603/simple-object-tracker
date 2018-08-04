@@ -12,7 +12,6 @@ class ImageMetaData(object):
 
     def __init__(self, img_path):
         self.image = Image.open(img_path)
-        print(self.image._getexif())
         self.get_exif_data()
         super(ImageMetaData, self).__init__()
 
@@ -23,7 +22,6 @@ class ImageMetaData(object):
         if info:
             for tag, value in info.items():
                 decoded = TAGS.get(tag, tag)
-                print(decoded)
                 if decoded == "GPSInfo":
                     gps_data = {}
                     for t in value:
@@ -79,7 +77,7 @@ class ImageMetaData(object):
                     lng = 0 - lng
         return lat, lng
 
-path_name = 'test.jpg'
+path_name = 'test.jpeg'
 meta_data =  ImageMetaData(path_name)
 latlng =meta_data.get_lat_lng()
 print(latlng)
@@ -103,7 +101,7 @@ print(exif_data)
 #        self.PosArr = ()
 #    def setOption(self, opt):
 #        self.opt = opt
-#    
+#
 #    def mousePressEvent(self, event):
 #        pen = QPen(QtCore.Qt.black)
 #        brush = QBrush(QtCore.Qt.black)
@@ -119,15 +117,15 @@ print(exif_data)
 #    def __init__(self, parent=None):
 #        super(SimpleWindow, self).__init__(parent)
 #        self.setupUi(self)
-#        
+#
 #        self.scene = GraphicsScene(self)
 #        self.graphicsView.setScene(self.scene)
 #        self.graphicsView.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-#        
+#
 #        group = QButtonGroup(self)
 #        group.addButton(self.radioButton)
 #        group.addButton(self.radioButton_2)
-#        
+#
 #        group.buttonClicked.connect(lambda btn: self.scene.setOption(btn.text()))
 #        self.radioButton.setChecked(True)
 #        self.scene.setOption(self.radioButton.text())
@@ -136,4 +134,3 @@ print(exif_data)
 #form = SimpleWindow()
 #form.show()
 #app.exec_()
-
