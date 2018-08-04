@@ -81,6 +81,8 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         print("graphicsview size w: %d h: %d" %(self.graphicsView.width(),self.graphicsView.height()))
         print("graphicsScene size w: %d h: %d" %(self.scene.width(),self.scene.height()))
 
+
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
