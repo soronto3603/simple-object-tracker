@@ -44,5 +44,5 @@ if __name__ == "__main__":
 
     image_file='DR0LKDqV4AA-V31.jpg'
     detection_result = detect_face(image_file)
-    image = mosaic(image_file, detection_result)
+    image = rantangle(image_file, detection_result)
     image.show()
